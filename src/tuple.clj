@@ -1,6 +1,22 @@
 (ns tuple
   (:require [clojure.math.numeric-tower :as math]))
 
+(defn x
+  [tuple]
+  (get tuple 0))
+
+(defn y
+  [tuple]
+  (get tuple 1))
+
+(defn z
+  [tuple]
+  (get tuple 2))
+
+(defn w
+  [tuple]
+  (get tuple 3))
+
 (defn make-point [x y z]
   [x y z 1.0])
 
