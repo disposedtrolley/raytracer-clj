@@ -1,1 +1,4 @@
-{:deps {}}
+{:paths ["src"]
+ :deps {org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
+ :aliases
+ {:test {:extra-deps {lambdaisland/kaocha {:mvn/version "1.0.732"}}}}}

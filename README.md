@@ -12,3 +12,7 @@ A raytracer implemented in Clojure based on [The Ray Tracer Challenge](http://ww
 ### Run
 
 - `clj -X main/-main` from the project root
+
+### Tests
+
+- `bin/kaocha`
