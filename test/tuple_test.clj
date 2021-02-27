@@ -14,3 +14,8 @@
   (testing "when a new point tuple is made"
     (is (= [4.3 -4.2 3.1 1.0]
            (SUT/make-point 4.3 -4.2 3.1)))))
+
+(deftest make-vector-test
+  (testing "when a new vector tuple is made"
+    (is (= [4.3 -4.2 3.1 0.0]
+           (SUT/make-vector 4.3 -4.2 3.1)))))
