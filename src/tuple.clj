@@ -17,11 +17,14 @@
   [tuple]
   (get tuple 3))
 
+(defn make-tuple [x y z w]
+  [x y z w])
+
 (defn make-point [x y z]
-  [x y z 1.0])
+  (make-tuple x y z 1.0))
 
 (defn make-vector [x y z]
-  [x y z 0.0])
+  (make-tuple x y z 0.0))
 
 (def EPSILON (cast Double 0.00001))
 

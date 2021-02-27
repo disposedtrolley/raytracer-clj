@@ -19,3 +19,28 @@
   (testing "when a new vector tuple is made"
     (is (= [4.3 -4.2 3.1 0.0]
            (SUT/make-vector 4.3 -4.2 3.1)))))
+
+(deftest float-eq?-test
+  (testing "when two floats with a difference smaller than EPSILON are compared"
+    (is (= true (SUT/float-eq? 0.000001 0.000002))))
+  (testing "when two floats with a difference larger than EPSILON are compared"
+    (is (= false (SUT/float-eq? 0.00001 0.0002))))
+  (testing "when two floats with a difference equal to EPSILON are compared"
+    (is (= false (SUT/float-eq? 0.00001 0.00002)))))
+
+(deftest tuple-eq?-test
+  (testing "when two tuples with differences smaller than EPSILON are compared"
+    (is (= true
+           (SUT/tuple-eq?
+             (SUT/make-tuple 0.000001 0.000001 0.000001 0.0)
+             (SUT/make-tuple 0.000002 0.000002 0.000002 0.0)))))
+  (testing "when two tuples with differences larger than EPSILON are compared"
+    (is (= false
+           (SUT/tuple-eq?
+             (SUT/make-tuple 0.000001 0.000001 0.000001 0.0)
+             (SUT/make-tuple 0.00002 0.00002 0.00002 0.0)))))
+  (testing "when two tuples with differences equal to EPSILON are compared"
+    (is (= false
+           (SUT/tuple-eq?
+             (SUT/make-tuple 0.00001 0.00001 0.00001 0.0)
+             (SUT/make-tuple 0.00002 0.00002 0.00002 0.0))))))
