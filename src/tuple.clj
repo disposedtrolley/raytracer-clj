@@ -41,3 +41,7 @@
   (if (> (+ (w a) (w b)) 1)
     (throw (ex-info "Attempted to add two points" {:a a :b b})))
   (map + a b))
+
+(defn sub
+  [a b]
+  (map - a b))

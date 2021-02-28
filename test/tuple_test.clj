@@ -54,3 +54,17 @@
     (is (= [1 1 6 1.0]
            (SUT/add (SUT/make-point 3 -2 5)
                     (SUT/make-vector -2 3 1))))))
+
+(deftest sub-test
+  (testing "subtracting two points should produce a vector"
+    (is (= (SUT/make-vector -2 -4 -6)
+           (SUT/sub (SUT/make-point 3 2 1)
+                    (SUT/make-point 5 6 7)))))
+  (testing "subtracting a vector from a point should produce a point"
+    (is (= (SUT/make-point -2 -4 -6)
+           (SUT/sub (SUT/make-point 3 2 1)
+                    (SUT/make-vector 5 6 7)))))
+  (testing "subtracting two vectors should produce a vector"
+    (is (= (SUT/make-vector -2 -4 -6)
+           (SUT/sub (SUT/make-vector 3 2 1)
+                    (SUT/make-vector 5 6 7))))))
