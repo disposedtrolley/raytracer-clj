@@ -30,9 +30,14 @@
 
 (defn float-eq?
   [a b]
-
   (< (math/abs (- a b)) EPSILON))
 
 (defn tuple-eq?
   [a b]
   (every? true? (map float-eq? a b)))
+
+(defn add
+  [a b]
+  (if (> (+ (w a) (w b)) 1)
+    (throw (ex-info "Attempted to add two points" {:a a :b b})))
+  (map + a b))

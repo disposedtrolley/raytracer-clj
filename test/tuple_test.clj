@@ -44,3 +44,13 @@
            (SUT/tuple-eq?
              (SUT/make-tuple 0.00001 0.00001 0.00001 0.0)
              (SUT/make-tuple 0.00002 0.00002 0.00002 0.0))))))
+
+(deftest add-test
+  (testing "when two vectors are added"
+    (is (= [10 0 0 0.0]
+           (SUT/add (SUT/make-vector 5 -2 3)
+                    (SUT/make-vector 5 2 -3)))))
+  (testing "when a vector and a point are added"
+    (is (= [1 1 6 1.0]
+           (SUT/add (SUT/make-point 3 -2 5)
+                    (SUT/make-vector -2 3 1))))))
