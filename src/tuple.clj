@@ -26,7 +26,7 @@
 (defn make-vector [x y z]
   (make-tuple x y z 0.0))
 
-(def EPSILON (cast Double 0.00001))
+(def EPSILON 0.00001)
 
 (defn float-eq?
   [a b]
