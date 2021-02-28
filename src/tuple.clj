@@ -45,3 +45,8 @@
 (defn sub
   [a b]
   (map - a b))
+
+(defn neg
+  [t]
+  (sub (make-tuple 0 0 0 0)
+       t))

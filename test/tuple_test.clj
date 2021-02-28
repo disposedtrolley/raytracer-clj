@@ -68,3 +68,8 @@
     (is (= (SUT/make-vector -2 -4 -6)
            (SUT/sub (SUT/make-vector 3 2 1)
                     (SUT/make-vector 5 6 7))))))
+
+(deftest neg-test
+  (testing "when a vector is negated"
+    (is (= (SUT/make-vector -1 2 -3)
+           (SUT/neg (SUT/make-vector 1 -2 3))))))
