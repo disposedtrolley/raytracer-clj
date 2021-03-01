@@ -88,3 +88,12 @@
   (if (or (is-point? a) (is-point? b))
     (throw (ex-info "Attempted to compute dot product of a point tuple" {:a a :b b})))
   (reduce + (map * a b)))
+
+(defn cross
+  [a b]
+  (if (or (is-point? a) (is-point? b))
+    (throw (ex-info "Attempted to compute cross product of a point tuple" {:a a :b b})))
+  (make-vector
+    (- (* (y a) (z b)) (* (z a) (y b)))
+    (- (* (z a) (x b)) (* (x a) (z b)))
+    (- (* (x a) (y b)) (* (y a) (x b)))))

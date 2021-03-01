@@ -122,3 +122,15 @@
            (SUT/dot
              (SUT/make-vector 1 2 3)
              (SUT/make-vector 2 3 4))))))
+
+(deftest cross-test
+  (testing "cross product of two vectors"
+    (is (= (SUT/make-vector -1 2 -1)
+           (SUT/cross
+             (SUT/make-vector 1 2 3)
+             (SUT/make-vector 2 3 4)))))
+  (testing "cross product of two vectors - reversed"
+    (is (= (SUT/make-vector 1 -2 1)
+           (SUT/cross
+             (SUT/make-vector 2 3 4)
+             (SUT/make-vector 1 2 3))))))
