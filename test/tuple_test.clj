@@ -1,5 +1,6 @@
 (ns tuple-test
   (:require [clojure.test :refer [are deftest is testing]]
+            [clojure.math.numeric-tower :as math]
             [tuple :as SUT]))
 
 (deftest tuple-parts-test
@@ -98,7 +99,19 @@
     (is (= 1.0
            (SUT/mag (SUT/make-vector 0 0 1)))))
   (testing "magnitude of a vector (1, 2, 3)"
-    (is (= 14.0
+    (is (= (math/sqrt 14.0)
            (SUT/mag (SUT/make-vector 1 2 3)))))
   (testing "unit-vector? helper method"
     (is (true? (SUT/unit-vector? (SUT/make-vector 1 0 0))))))
+
+(deftest normalise-test
+  (testing "normalising a vector"
+    (is (= (SUT/make-tuple 1.0 0.0 0.0 0.0)
+           (SUT/normalise (SUT/make-vector 4 0 0)))))
+  (testing "normalising another vector"
+    (is (= (SUT/make-tuple
+             (/ 1 (math/sqrt 14))
+             (/ 2 (math/sqrt 14))
+             (/ 3 (math/sqrt 14))
+             0.0)
+           (SUT/normalise (SUT/make-vector 1 2 3))))))

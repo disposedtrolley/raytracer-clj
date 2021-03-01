@@ -71,8 +71,14 @@
   [t]
   (if (not (is-vector? t))
     (throw (ex-info "Attempted to compute the magnitude of a non-vector tuple" {:t t})))
-  (reduce + (map #(math/expt % 2) t)))
+  (math/sqrt (reduce + (map #(math/expt % 2) t))))
 
 (defn unit-vector?
   [t]
   (= 1.0 (mag t)))
+
+(defn normalise
+  [t]
+  (if (not (is-vector? t))
+    (throw (ex-info "Attempted to normalise a non-vector tuple" {:t t})))
+  (map #(/ % (mag t)) t))
