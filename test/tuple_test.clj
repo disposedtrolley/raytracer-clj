@@ -99,4 +99,6 @@
            (SUT/mag (SUT/make-vector 0 0 1)))))
   (testing "magnitude of a vector (1, 2, 3)"
     (is (= 14.0
-           (SUT/mag (SUT/make-vector 1 2 3))))))
+           (SUT/mag (SUT/make-vector 1 2 3)))))
+  (testing "unit-vector? helper method"
+    (is (true? (SUT/unit-vector? (SUT/make-vector 1 0 0))))))

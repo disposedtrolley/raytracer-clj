@@ -64,3 +64,7 @@
   (if (= 0 (w t))
     (throw (ex-info "Attempted to compute the magnitude of a non-vector tuple" {:t t})))
   (reduce + (map #(math/expt % 2) t)))
+
+(defn unit-vector?
+  [t]
+  (= 1.0 (mag t)))
