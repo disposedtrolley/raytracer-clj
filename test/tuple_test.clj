@@ -86,3 +86,17 @@
   (testing "dividing a tuple by a scalar"
     (is (= (SUT/make-tuple 0.5 -1.0 1.5 -2.0)
            (SUT/div (SUT/make-tuple 1 -2 3 -4) 2)))))
+
+(deftest mag-test
+  (testing "magnitude of a vector (1, 0, 0)"
+    (is (= 1.0
+           (SUT/mag (SUT/make-vector 1 0 0)))))
+  (testing "magnitude of a vector (0, 1, 0)"
+    (is (= 1.0
+           (SUT/mag (SUT/make-vector 0 1 0)))))
+  (testing "magnitude of a vector (0, 0, 1)"
+    (is (= 1.0
+           (SUT/mag (SUT/make-vector 0 0 1)))))
+  (testing "magnitude of a vector (1, 2, 3)"
+    (is (= 14.0
+           (SUT/mag (SUT/make-vector 1 2 3))))))

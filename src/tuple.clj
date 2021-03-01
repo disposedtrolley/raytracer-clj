@@ -58,3 +58,9 @@
 (defn div
   [t s]
   (map #(/ % (float s)) t))
+
+(defn mag
+  [t]
+  (if (= 0 (w t))
+    (throw (ex-info "Attempted to compute the magnitude of a non-vector tuple" {:t t})))
+  (reduce + (map #(math/expt % 2) t)))
