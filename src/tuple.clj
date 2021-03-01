@@ -50,3 +50,7 @@
   [t]
   (sub (make-tuple 0 0 0 0)
        t))
+
+(defn mul
+  [t s]
+  (map #(* s %) t))

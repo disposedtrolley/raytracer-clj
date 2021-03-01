@@ -73,3 +73,11 @@
   (testing "when a vector is negated"
     (is (= (SUT/make-vector -1 2 -3)
            (SUT/neg (SUT/make-vector 1 -2 3))))))
+
+(deftest mul-test
+  (testing "multiplying a tuple by a scalar"
+    (is (= (SUT/make-tuple 3.5 -7.0 10.5 -14.0)
+           (SUT/mul (SUT/make-tuple 1 -2 3 -4) 3.5))))
+  (testing "multiplying a tuple by a fraction scalar"
+    (is (= (SUT/make-tuple 0.5 -1.0 1.5 -2.0)
+           (SUT/mul (SUT/make-tuple 1 -2 3 -4) 0.5)))))
