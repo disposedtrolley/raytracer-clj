@@ -82,3 +82,9 @@
   (if (not (is-vector? t))
     (throw (ex-info "Attempted to normalise a non-vector tuple" {:t t})))
   (map #(/ % (mag t)) t))
+
+(defn dot
+  [a b]
+  (if (or (is-point? a) (is-point? b))
+    (throw (ex-info "Attempted to compute dot product of a point tuple" {:a a :b b})))
+  (reduce + (map * a b)))

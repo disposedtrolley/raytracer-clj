@@ -115,3 +115,10 @@
              (/ 3 (math/sqrt 14))
              0.0)
            (SUT/normalise (SUT/make-vector 1 2 3))))))
+
+(deftest dot-test
+  (testing "dot product of two tuples"
+    (is (= 20.0
+           (SUT/dot
+             (SUT/make-vector 1 2 3)
+             (SUT/make-vector 2 3 4))))))
