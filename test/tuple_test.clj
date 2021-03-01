@@ -81,3 +81,8 @@
   (testing "multiplying a tuple by a fraction scalar"
     (is (= (SUT/make-tuple 0.5 -1.0 1.5 -2.0)
            (SUT/mul (SUT/make-tuple 1 -2 3 -4) 0.5)))))
+
+(deftest div-test
+  (testing "dividing a tuple by a scalar"
+    (is (= (SUT/make-tuple 0.5 -1.0 1.5 -2.0)
+           (SUT/div (SUT/make-tuple 1 -2 3 -4) 2)))))

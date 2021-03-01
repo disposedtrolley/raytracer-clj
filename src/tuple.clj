@@ -53,4 +53,8 @@
 
 (defn mul
   [t s]
-  (map #(* s %) t))
+  (map #(* % s) t))
+
+(defn div
+  [t s]
+  (map #(/ % (float s)) t))
