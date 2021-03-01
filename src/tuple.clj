@@ -26,6 +26,14 @@
 (defn make-vector [x y z]
   (make-tuple x y z 0.0))
 
+(defn is-vector?
+  [t]
+  (= 0.0 (w t)))
+
+(defn is-point?
+  [t]
+  (= 1.0 (w t)))
+
 (def EPSILON 0.00001)
 
 (defn float-eq?
@@ -38,7 +46,7 @@
 
 (defn add
   [a b]
-  (if (> (+ (w a) (w b)) 1)
+  (if (and (is-point? a) (is-point? b))
     (throw (ex-info "Attempted to add two points" {:a a :b b})))
   (map + a b))
 
@@ -61,7 +69,7 @@
 
 (defn mag
   [t]
-  (if (= 0 (w t))
+  (if (not (is-vector? t))
     (throw (ex-info "Attempted to compute the magnitude of a non-vector tuple" {:t t})))
   (reduce + (map #(math/expt % 2) t)))
 
