@@ -2,20 +2,27 @@
   (:require [tuple]))
 
 (defn make-projectile
+  "Makes a projectile from a given position point and velocity vector."
   [position velocity]
   {:position position :velocity velocity})
 
 (defn make-environment
+  "Makes an environment from a given gravity and wind vector."
   [gravity wind]
   {:gravity gravity :wind wind})
 
 (defn tick
+  "Advances the time by one step, returning a new projectile with
+  an updated position and velocity given the effects of the
+  environment."
   [projectile environment]
   (make-projectile
     (tuple/add (:position projectile) (:velocity projectile))
     (tuple/add (tuple/add (:velocity projectile) (:gravity environment)) (:wind environment))))
 
 (defn run
+  "Executes the simulation with a default velocity-multiplier of
+  2.0."
   ([]
    (run 2.0))
   ([velocity-multiplier]
