@@ -144,3 +144,15 @@
            (SUT/cross
              (SUT/make-vector 2 3 4)
              (SUT/make-vector 1 2 3))))))
+
+(deftest make-colour-test
+  (testing "makes an RGB colour tuple"
+    (let [colour-to-test (SUT/make-colour 0.9 0.8 0.7)]
+      (is (= [0.9 0.8 0.7 1.0]
+             colour-to-test))
+      (is (= 0.9
+             (SUT/red colour-to-test)))
+      (is (= 0.8
+             (SUT/green colour-to-test)))
+      (is (= 0.7
+             (SUT/blue colour-to-test))))))
