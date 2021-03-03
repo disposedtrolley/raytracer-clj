@@ -48,11 +48,11 @@
   [a b]
   (if (and (is-point? a) (is-point? b))
     (throw (ex-info "Attempted to add two points" {:a a :b b})))
-  (map + a b))
+  (into [] (map + a b)))
 
 (defn sub
   [a b]
-  (map - a b))
+  (into [] (map - a b)))
 
 (defn neg
   [t]
@@ -61,11 +61,11 @@
 
 (defn mul
   [t s]
-  (map #(* % s) t))
+  (into [] (map #(* % s) t)))
 
 (defn div
   [t s]
-  (map #(/ % (float s)) t))
+  (into [] (map #(/ % (float s)) t)))
 
 (defn mag
   [t]
@@ -81,7 +81,7 @@
   [t]
   (if (not (is-vector? t))
     (throw (ex-info "Attempted to normalise a non-vector tuple" {:t t})))
-  (map #(/ % (mag t)) t))
+  (into [] (map #(/ % (mag t)) t)))
 
 (defn dot
   [a b]
