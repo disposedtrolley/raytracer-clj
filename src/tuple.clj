@@ -74,16 +74,21 @@
   (every? true? (map float-eq? a b)))
 
 (defn add
-  "Returns the addition of tuples a and b as a new tuple."
-  [a b]
-  (if (and (is-point? a) (is-point? b))
-    (throw (ex-info "Attempted to add two points" {:a a :b b})))
-  (into [] (map + a b)))
+  "Returns the addition of tuples a and b as a new tuple. You
+  can pass additional tuples."
+  [a b & t]
+  (let [tuples-to-add (apply vector a b t)]
+    (if (every? true? (map is-point? tuples-to-add))
+      (throw (ex-info "Attempted to add two points" {:a a :b b :t t})))
+    (into [] (reduce #(map + %1 %2) tuples-to-add))))
 
 (defn sub
-  "Returns the subtraction of tuples a and b as a new tuple."
-  [a b]
-  (into [] (map - a b)))
+  "Returns the subtraction of tuples a and b as a new tuple. You
+  can pass additional tuples which will be subtracted in the order
+  provided."
+  [a b & t]
+  (let [tuples-to-sub (apply vector a b t)]
+    (into [] (reduce #(map - %1 %2) tuples-to-sub))))
 
 (defn neg
   "Returns the negation of tuple t."

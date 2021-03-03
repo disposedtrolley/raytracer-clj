@@ -54,7 +54,12 @@
   (testing "when a vector and a point are added"
     (is (= [1 1 6 1.0]
            (SUT/add (SUT/make-point 3 -2 5)
-                    (SUT/make-vector -2 3 1))))))
+                    (SUT/make-vector -2 3 1)))))
+  (testing "when more than two tuples are added"
+    (is (= [3 3 3 1.0]
+           (SUT/add (SUT/make-point 1 1 1)
+                    (SUT/make-vector 1 1 1)
+                    (SUT/make-vector 1 1 1))))))
 
 (deftest sub-test
   (testing "subtracting two points should produce a vector"
@@ -68,7 +73,12 @@
   (testing "subtracting two vectors should produce a vector"
     (is (= (SUT/make-vector -2 -4 -6)
            (SUT/sub (SUT/make-vector 3 2 1)
-                    (SUT/make-vector 5 6 7))))))
+                    (SUT/make-vector 5 6 7)))))
+  (testing "when more than two tuples are subtracted"
+    (is (= [1 1 1 1.0]
+           (SUT/sub (SUT/make-point 3 3 3)
+                    (SUT/make-vector 1 1 1)
+                    (SUT/make-vector 1 1 1))))))
 
 (deftest neg-test
   (testing "when a vector is negated"

@@ -18,7 +18,7 @@
   [projectile environment]
   (make-projectile
     (tuple/add (:position projectile) (:velocity projectile))
-    (tuple/add (tuple/add (:velocity projectile) (:gravity environment)) (:wind environment))))
+    (tuple/add (:velocity projectile) (:gravity environment) (:wind environment))))
 
 (defn run
   "Executes the simulation with a default velocity-multiplier of
