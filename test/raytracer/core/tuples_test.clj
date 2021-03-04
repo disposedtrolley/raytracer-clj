@@ -1,7 +1,7 @@
-(ns tuple-test
+(ns raytracer.core.tuples-test
   (:require [clojure.test :refer [are deftest is testing]]
             [clojure.math.numeric-tower :as math]
-            [tuple :as SUT]))
+            [raytracer.core.tuples :as SUT]))
 
 (deftest tuple-parts-test
   (def my-tuple [4.3 -4.2 3.1 1.0])

@@ -1,4 +1,4 @@
-(ns tuple
+(ns raytracer.core.tuples
   (:require [clojure.math.numeric-tower :as math]))
 
 (defn x

@@ -1,5 +1,5 @@
-(ns tick
-  (:require [tuple]))
+(ns raytracer.examples.tick
+  (:require [raytracer.core.tuples :as tuples]))
 
 (defn make-projectile
   "Makes a projectile from a given position point and velocity vector."
@@ -17,8 +17,8 @@
   environment."
   [projectile environment]
   (make-projectile
-    (tuple/add (:position projectile) (:velocity projectile))
-    (tuple/add (:velocity projectile) (:gravity environment) (:wind environment))))
+    (tuples/add (:position projectile) (:velocity projectile))
+    (tuples/add (:velocity projectile) (:gravity environment) (:wind environment))))
 
 (defn run
   "Executes the simulation with a default velocity-multiplier of
@@ -27,14 +27,14 @@
    (run 2.0))
   ([velocity-multiplier]
    ((def p (make-projectile
-             (tuple/make-point 0 1 0)
-             (tuple/mul (tuple/normalise (tuple/make-vector 1 1 0)) velocity-multiplier)))
+             (tuples/make-point 0 1 0)
+             (tuples/mul (tuples/normalise (tuples/make-vector 1 1 0)) velocity-multiplier)))
     (def e (make-environment
-             (tuple/make-vector 0 -0.1 0)
-             (tuple/make-vector -0.01 0 0)))
+             (tuples/make-vector 0 -0.1 0)
+             (tuples/make-vector -0.01 0 0)))
 
     (loop [p p
            i 0]
-      (when (> (tuple/y (:position p)) 0)
+      (when (> (tuples/y (:position p)) 0)
        (printf "Tick: %d Position: %s\n" i p)
        (recur (tick p e) (inc i)))))))
