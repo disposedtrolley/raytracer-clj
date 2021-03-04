@@ -80,7 +80,7 @@
   can pass additional tuples."
   [a b & t]
   (let [tuples-to-add (apply vector a b t)]
-    (if (every? true? (map is-point? tuples-to-add))
+    (if (every? is-point? tuples-to-add)
       (throw (ex-info "Attempted to add two points" {:a a :b b :t t})))
     (into [] (reduce #(map + %1 %2) tuples-to-add))))
 
@@ -132,14 +132,14 @@
 (defn dot
   "Returns the dot product of the vector tuple t."
   [a b]
-  (if (or (is-point? a) (is-point? b))
+  (if (some is-point? [a b])
     (throw (ex-info "Attempted to compute dot product of a point tuple" {:a a :b b})))
   (reduce + (map * a b)))
 
 (defn cross
   "Returns the cross product of the vector tuple t."
   [a b]
-  (if (or (is-point? a) (is-point? b))
+  (if (some is-point? [a b])
     (throw (ex-info "Attempted to compute cross product of a point tuple" {:a a :b b})))
   (make-vector
     (- (* (y a) (z b)) (* (z a) (y b)))
