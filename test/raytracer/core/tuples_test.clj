@@ -148,7 +148,7 @@
 (deftest make-colour-test
   (testing "makes an RGB colour tuple"
     (let [colour-to-test (SUT/make-colour 0.9 0.8 0.7)]
-      (is (= [0.9 0.8 0.7 1.0]
+      (is (= [0.9 0.8 0.7 2.0]
              colour-to-test))
       (is (= 0.9
              (SUT/red colour-to-test)))
