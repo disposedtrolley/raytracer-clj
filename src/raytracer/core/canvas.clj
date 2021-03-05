@@ -101,6 +101,6 @@
                           (map pixel-to-rgb)
                           (flatten)
                           (map #(int (scale-pixel-channel %)))
-                          (partition (* 3 width) (* 3 width) nil)
+                          (partition-all (* 3 width))
                           (map #(str/join " " %)))))
          terminator)))
