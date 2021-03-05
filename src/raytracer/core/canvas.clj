@@ -77,13 +77,38 @@
   [colour]
   ((juxt tuples/red tuples/green tuples/blue) colour))
 
+(defn ^:private ppm-partitioner
+  "Partitions a list of pixels to conform to the PPM
+  standard. Each partition of values will be the size
+  of the image width provided or 70 characters, whichever
+  is lower."
+  [width]
+  (let [char-count (atom 0)
+        processed-vals (atom 0)
+        max-chars 70
+        pad 4
+        vals-per-pixel 3]
+    (fn [val]
+      (cond
+        (or (>= (+ pad @char-count) max-chars)
+            (= @processed-vals (* vals-per-pixel width)))
+        (do
+          (reset! char-count 0)
+          (reset! processed-vals 0)
+          val)
+        :else
+        (do
+          (reset! char-count (+ @char-count (count (str val))))
+          (swap! processed-vals inc)
+          nil)))))
+
 (defn ^:private ppm-body
   [pixels width]
   (->> pixels
        (map colour-to-rgb)
        (flatten)
        (map #(int (scale-pixel-channel %)))
-       (partition-all (* 3 width))
+       (partition-by (ppm-partitioner width))
        (map #(str/join " " %))))
 
 (defn to-ppm
