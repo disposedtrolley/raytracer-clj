@@ -77,6 +77,15 @@
   [colour]
   ((juxt tuples/red tuples/green tuples/blue) colour))
 
+(defn ^:private ppm-body
+  [pixels width]
+  (->> pixels
+       (map colour-to-rgb)
+       (flatten)
+       (map #(int (scale-pixel-channel %)))
+       (partition-all (* 3 width))
+       (map #(str/join " " %))))
+
 (defn to-ppm
   "Renders the canvas as a PPM file, returning the file contents
   as a string."
@@ -89,10 +98,5 @@
     (str (str/join terminator
                    (concat
                      (ppm-header width height depth)
-                     (->> pixels
-                          (map colour-to-rgb)
-                          (flatten)
-                          (map #(int (scale-pixel-channel %)))
-                          (partition-all (* 3 width))
-                          (map #(str/join " " %)))))
+                     (ppm-body pixels width)))
          terminator)))
