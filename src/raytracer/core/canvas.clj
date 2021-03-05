@@ -1,5 +1,7 @@
 (ns raytracer.core.canvas
-  (:require [raytracer.core.tuples :as tuples]))
+  (:require [raytracer.core.tuples :as tuples]
+            [clojure.string :as str]
+            [clojure.math.numeric-tower :as math]))
 
 (defn width
   [canvas]
@@ -41,3 +43,55 @@
   [canvas x y]
   (let [pixel-idx (+ (* y (width canvas)) x)]
     (get (pixels canvas) pixel-idx)))
+
+(defn ^:private ppm-header
+  "Returns a vector representing the lines in the PPM header."
+  [width height depth]
+  ["P3"
+   (format "%d %d" width height)
+   depth])
+
+(defn ^:private scale-pixel-channel
+  "Returns the pixel channel as a scaled value between 0 and 255.
+  Output value is clamped if outside of the 0-255 range."
+  [pixel]
+  (let [pixel-min 0
+        pixel-max 1
+        output-min 0
+        output-max 255]
+    ;; Clamp values if necessary.
+    (cond
+      (< pixel pixel-min) output-min
+      (> pixel pixel-max) output-max
+      :else
+      ;; Scale the pixel value.
+      ;; https://stats.stackexchange.com/a/281165
+      (+ (* (- output-max output-min)
+            (/ (- pixel pixel-min)
+               (- pixel-max pixel-min)))
+         output-min))))
+
+(defn ^:private pixel-to-str
+  "Returns the pixel as a string of three numbers representing
+  the red, green, and blue channels. Numbers are space-separated
+  and range from 0 to 255."
+  [pixel]
+  (format "%d %d %d" (int (scale-pixel-channel (tuples/red pixel)))
+                     (int (scale-pixel-channel (tuples/green pixel)))
+                     (int (scale-pixel-channel (tuples/blue pixel)))))
+
+(defn to-ppm
+  "Renders the canvas as a PPM file, returning the file contents
+  as a string."
+  [canvas]
+  (let [width (width canvas)
+        height (height canvas)
+        depth 255
+        pixels (pixels canvas)]
+    (str/join "\n"
+              (concat
+                (ppm-header width height depth)
+                (map #(str/join " " %)
+                  (partition
+                    width width nil
+                    (map pixel-to-str pixels)))))))

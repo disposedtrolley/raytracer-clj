@@ -28,3 +28,20 @@
                (SUT/pixel mutated-canvas 0 0)))
         (is (= red
                (SUT/pixel mutated-canvas 9 19)))))))
+
+(deftest to-ppm-test
+  (let [c (SUT/make-canvas 5 3)
+        c1 (tuples/make-colour 1.5 0 0)
+        c2 (tuples/make-colour 0 0.5 0)
+        c3 (tuples/make-colour -0.5 0 1)]
+    (testing "writes the PPM file correctly"
+      (let [c (SUT/write c 0 0 c1)
+            c (SUT/write c 2 1 c2)
+            c (SUT/write c 4 2 c3)]
+        (is (= "P3
+5 3
+255
+255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 127 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 255"
+               (SUT/to-ppm c)))))))
