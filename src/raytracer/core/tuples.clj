@@ -46,8 +46,6 @@
   (make-tuple x y z 0.0))
 
 (defn make-colour [r g b]
-  (if (some #(> % 1) [r g b])
-    (throw (ex-info "Arguments must be <= 1" {:r r :g g :b b})))
   (make-tuple r g b 2.0))
 
 (defn is-vector?
