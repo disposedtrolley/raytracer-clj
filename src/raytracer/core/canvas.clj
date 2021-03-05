@@ -76,9 +76,14 @@
   the red, green, and blue channels. Numbers are space-separated
   and range from 0 to 255."
   [pixel]
+  ;; Yes, juxt can probably be used here but this is much clearer.
   (format "%d %d %d" (int (scale-pixel-channel (tuples/red pixel)))
                      (int (scale-pixel-channel (tuples/green pixel)))
                      (int (scale-pixel-channel (tuples/blue pixel)))))
+
+(defn ^:private pixel-to-rgb
+  [pixel]
+  ((juxt tuples/red tuples/green tuples/blue) pixel))
 
 (defn to-ppm
   "Renders the canvas as a PPM file, returning the file contents
@@ -87,11 +92,15 @@
   (let [width (width canvas)
         height (height canvas)
         depth 255
-        pixels (pixels canvas)]
-    (str/join "\n"
-              (concat
-                (ppm-header width height depth)
-                (map #(str/join " " %)
-                  (partition
-                    width width nil
-                    (map pixel-to-str pixels)))))))
+        pixels (pixels canvas)
+        terminator "\n"]
+    (str (str/join terminator
+                   (concat
+                     (ppm-header width height depth)
+                     (->> pixels
+                          (map pixel-to-rgb)
+                          (flatten)
+                          (map #(int (scale-pixel-channel %)))
+                          (partition (* 3 width) (* 3 width) nil)
+                          (map #(str/join " " %)))))
+         terminator)))
