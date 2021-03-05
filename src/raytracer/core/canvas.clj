@@ -71,19 +71,11 @@
                (- pixel-max pixel-min)))
          output-min))))
 
-(defn ^:private pixel-to-str
-  "Returns the pixel as a string of three numbers representing
-  the red, green, and blue channels. Numbers are space-separated
-  and range from 0 to 255."
-  [pixel]
-  ;; Yes, juxt can probably be used here but this is much clearer.
-  (format "%d %d %d" (int (scale-pixel-channel (tuples/red pixel)))
-                     (int (scale-pixel-channel (tuples/green pixel)))
-                     (int (scale-pixel-channel (tuples/blue pixel)))))
-
-(defn ^:private pixel-to-rgb
-  [pixel]
-  ((juxt tuples/red tuples/green tuples/blue) pixel))
+(defn ^:private colour-to-rgb
+  "Returns the colour tuple as a three-element RGB tuple,
+  effectively the same tuple less the w component."
+  [colour]
+  ((juxt tuples/red tuples/green tuples/blue) colour))
 
 (defn to-ppm
   "Renders the canvas as a PPM file, returning the file contents
@@ -98,7 +90,7 @@
                    (concat
                      (ppm-header width height depth)
                      (->> pixels
-                          (map pixel-to-rgb)
+                          (map colour-to-rgb)
                           (flatten)
                           (map #(int (scale-pixel-channel %)))
                           (partition-all (* 3 width))
