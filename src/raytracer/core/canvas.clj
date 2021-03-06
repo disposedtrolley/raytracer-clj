@@ -90,31 +90,51 @@
   of the image width provided or 70 characters, whichever
   is lower."
   [width]
-  (let [char-count (atom 0) ;; How many str chars would be rendered in the current row.
-        processed-vals (atom 0) ;; How many pixel channels have been seen.
-        max-chars 70 ;; PPM file spec limit
-        pad 0 ;; Prevent max-chars overrun
+  ;; I really, really don't like this function, but it passes the
+  ;; unit tests in the book and I _think_ the logic is sound.
+  ;;
+  ;; Specifically, the magic number used for the space separation
+  ;; padding (1) and the one used to compensate for the lack of a
+  ;; space at the very end of a line (-2) bother me very much.
+  ;;
+  ;; There's likely a better way to compute the amount of space the
+  ;; current val will take in the output string and make a decision
+  ;; to partition.
+  ;;
+  ;; What I _do_ like is that I've managed to cut down on the amount
+  ;; of state to two atoms (remaining-chars and remaining-vals-in-row)
+  ;; from the four during the first cut. The cond statement is also
+  ;; fairly clear in what it tries to achieve; first check if we've
+  ;; processed all pixel channels for pixels in the current row, if
+  ;; not check if we're about to exhaust the 70 character limit.
+  (let [max-chars 70 ;; PPM file spec limit
+        remaining-chars (atom max-chars)
         vals-per-pixel 3 ;; How many pixel channels in a single pixel.
         remaining-vals-in-row (atom (* width vals-per-pixel))] ;; How many pixel channel vals left in the current row.
     (fn [val]
-      (cond
-        (or (>= (+ pad @char-count) max-chars)
-            (= @processed-vals (* vals-per-pixel width)))
-        (do
-          (reset! char-count 0)
-          (reset! processed-vals 0)
-          val)
-        (= @remaining-vals-in-row 0)
-        (do
-          (reset! remaining-vals-in-row (* width vals-per-pixel))
-          (reset! char-count 0)
-          val)
-        :else
-        (do
-          (reset! char-count (+ 1 @char-count (count (str val))))
-          (swap! processed-vals inc)
-          (swap! remaining-vals-in-row dec)
-          nil)))))
+      (let [val-char-len (+ (count (str val)) 1)] ;; Extra 1 for the space separator.
+        (cond
+          ;; All pixel channels in the row have been seen; time to
+          ;; partition the input.
+          (= 0 @remaining-vals-in-row)
+          (do
+            (reset! remaining-chars max-chars)
+            (reset! remaining-vals-in-row (* width vals-per-pixel))
+            val)
+          ;; We're about to exhaust the 70 character line limit; time
+          ;; to partition the input.
+          (< (- @remaining-chars val-char-len) -2)
+          (do
+            (reset! remaining-chars max-chars)
+            val)
+          ;; Decrement remaining character count by length that val is
+          ;; expected to occupy.
+          ;; Decrement number of remaining pixel values for this row.
+          :else
+          (do
+            (reset! remaining-chars (- @remaining-chars val-char-len))
+            (swap! remaining-vals-in-row dec)
+            nil))))))
 
 (defn ^:private ppm-body
   [pixels width]
