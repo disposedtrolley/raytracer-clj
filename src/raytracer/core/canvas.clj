@@ -38,6 +38,13 @@
   (let [pixel-idx (+ (* y (width canvas)) x)]
     (assoc canvas :pixels (assoc (pixels canvas) pixel-idx pixel))))
 
+(defn fill
+  "Fills the entire canvas with the provided colour."
+  [canvas colour]
+  (assoc canvas :pixels
+                (vec (repeat (* (width canvas) (height canvas))
+                             colour))))
+
 (defn pixel
   "Returns the pixel at the x and y coordinates of the canvas."
   [canvas x y]

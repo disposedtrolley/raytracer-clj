@@ -29,6 +29,13 @@
         (is (= red
                (SUT/pixel mutated-canvas 9 19)))))))
 
+(deftest fill-test
+  (let [test-canvas (SUT/make-canvas 2 2)
+        red (tuples/make-colour 1 0 0)]
+    (testing "fills the canvas in red completely"
+      (let [mutated-canvas (SUT/fill test-canvas red)]
+        (is (every? true? (map #(= red %) (SUT/pixels mutated-canvas))))))))
+
 (deftest to-ppm-test
   (let [c (SUT/make-canvas 5 3)
         c1 (tuples/make-colour 1.5 0 0)
