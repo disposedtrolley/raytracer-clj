@@ -23,28 +23,30 @@
     (tuples/add (:velocity projectile) (:gravity environment) (:wind environment))))
 
 (defn run
-  "Executes the simulation with a default velocity-multiplier of
-  2.0."
-  ([]
-   (run 2.0))
-  ([velocity-multiplier]
-   (let [p (make-projectile
-             (tuples/make-point 0 1 0)
-             (tuples/mul (tuples/normalise (tuples/make-vector 1 1 0)) velocity-multiplier))
-         e (make-environment
-             (tuples/make-vector 0 -0.1 0)
-             (tuples/make-vector -0.01 0 0))]
-    (loop [p p
-           i 0]
-      (when (> (tuples/y (:position p)) 0)
-       (printf "Tick: %d Position: %s\n" i p)
-       (recur (tick p e) (inc i)))))))
+  "Executes the simulation, printing the position of the projectile
+  at each time step. A velocity multiplier can be supplied in the
+  :velocity-multiplier key of opts, otherwise defaults to 2.0."
+  [opts]
+  (let [velocity-multiplier (if (contains? opts :velocity-multiplier)
+                              (:velocity-multiplier opts)
+                              2.0)
+        p (make-projectile
+            (tuples/make-point 0 1 0)
+            (tuples/mul (tuples/normalise (tuples/make-vector 1 1 0)) velocity-multiplier))
+        e (make-environment
+            (tuples/make-vector 0 -0.1 0)
+            (tuples/make-vector -0.01 0 0))]
+   (loop [p p
+          i 0]
+     (when (> (tuples/y (:position p)) 0)
+      (printf "Tick: %d Position: %s\n" i p)
+      (recur (tick p e) (inc i))))))
 
 (defn run-with-canvas
   "Executes the simulation with the projectile's position
-  plotted onto a canvas, returning the resulting PPM file
-  contents as a string."
-  []
+  plotted onto a canvas, saving the result into a PPM file
+  in the :outfile key of opts."
+  [opts]
   (let [c (canvas/make-canvas 900 550)
         p (make-projectile
             (tuples/make-point 0 1 0)
@@ -65,4 +67,4 @@
               new-p (tick p e)]
           (printf "Tick: %d Position: %s\n" i p)
           (recur new-p new-c (inc i)))
-        (canvas/to-ppm c)))))
+        (spit (:outfile opts) (canvas/to-ppm c))))))
