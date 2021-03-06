@@ -26,13 +26,12 @@
   ([]
    (run 2.0))
   ([velocity-multiplier]
-   ((def p (make-projectile
+   (let [p (make-projectile
              (tuples/make-point 0 1 0)
-             (tuples/mul (tuples/normalise (tuples/make-vector 1 1 0)) velocity-multiplier)))
-    (def e (make-environment
+             (tuples/mul (tuples/normalise (tuples/make-vector 1 1 0)) velocity-multiplier))
+         e (make-environment
              (tuples/make-vector 0 -0.1 0)
-             (tuples/make-vector -0.01 0 0)))
-
+             (tuples/make-vector -0.01 0 0))]
     (loop [p p
            i 0]
       (when (> (tuples/y (:position p)) 0)
