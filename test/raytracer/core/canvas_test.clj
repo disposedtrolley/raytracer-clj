@@ -37,12 +37,13 @@
         (is (every? true? (map #(= red %) (SUT/pixels mutated-canvas))))))))
 
 (deftest to-ppm-test
-  (let [c (SUT/make-canvas 5 3)
-        c1 (tuples/make-colour 1.5 0 0)
-        c2 (tuples/make-colour 0 0.5 0)
-        c3 (tuples/make-colour -0.5 0 1)]
+  (let []
     (testing "writes the PPM file correctly"
-      (let [c (SUT/write c 0 0 c1)
+      (let [c1 (tuples/make-colour 1.5 0 0)
+            c2 (tuples/make-colour 0 0.5 0)
+            c3 (tuples/make-colour -0.5 0 1)
+            c (SUT/make-canvas 5 3)
+            c (SUT/write c 0 0 c1)
             c (SUT/write c 2 1 c2)
             c (SUT/write c 4 2 c3)]
         (is (= "P3
@@ -51,5 +52,18 @@
 255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 127 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
+"
+               (SUT/to-ppm c)))))
+    (testing "ensures lines are <= 70 characters"
+      (let [c1 (tuples/make-colour 1 0.8 0.6)
+            c (SUT/make-canvas 10 2)
+            c (SUT/fill c c1)]
+        (is (= "P3
+10 2
+255
+255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204 153
+255 204 153 255 204 153 255 204 153 255 204 153
+255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204 153
+255 204 153 255 204 153 255 204 153 255 204 153
 "
                (SUT/to-ppm c)))))))

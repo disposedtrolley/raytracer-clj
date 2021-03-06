@@ -90,11 +90,12 @@
   of the image width provided or 70 characters, whichever
   is lower."
   [width]
-  (let [char-count (atom 0)
-        processed-vals (atom 0)
-        max-chars 70
-        pad 4
-        vals-per-pixel 3]
+  (let [char-count (atom 0) ;; How many str chars would be rendered in the current row.
+        processed-vals (atom 0) ;; How many pixel channels have been seen.
+        max-chars 70 ;; PPM file spec limit
+        pad 0 ;; Prevent max-chars overrun
+        vals-per-pixel 3 ;; How many pixel channels in a single pixel.
+        remaining-vals-in-row (atom (* width vals-per-pixel))] ;; How many pixel channel vals left in the current row.
     (fn [val]
       (cond
         (or (>= (+ pad @char-count) max-chars)
@@ -103,10 +104,16 @@
           (reset! char-count 0)
           (reset! processed-vals 0)
           val)
+        (= @remaining-vals-in-row 0)
+        (do
+          (reset! remaining-vals-in-row (* width vals-per-pixel))
+          (reset! char-count 0)
+          val)
         :else
         (do
-          (reset! char-count (+ @char-count (count (str val))))
+          (reset! char-count (+ 1 @char-count (count (str val))))
           (swap! processed-vals inc)
+          (swap! remaining-vals-in-row dec)
           nil)))))
 
 (defn ^:private ppm-body
